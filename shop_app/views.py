@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
 import uuid
+from django.utils.timezone import now
 
 # Function-based view (optional - you can keep or remove)
 User = get_user_model()
@@ -16,7 +17,18 @@ User = get_user_model()
 def get_user_detals(request, user_id):
     try:
         user = User.objects.get(id = user_id)
-        return Response({"id": user.id, "username": user.username, "email": user.email})
+        return Response({
+            "id": user.id, 
+            "username": user.username, 
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "date_joined": user.date_joined,
+            "city": user.city,
+            "state": user.state,
+            "address": user.address,
+            "phone": user.phone,
+            })
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -175,6 +187,22 @@ def get_cart(request):
         serializer = auth_serializer.CartItemSerializer(items, many=True)
         total = sum(item.product.price * item.quantity for item in items)
         
+        # order = auth_model.Order.objects.create(
+        #     user=request.user,
+        #     total_price=total,
+        #     created_at=now(),
+        #     status="PENDING"
+        # )
+        
+        # for cart_items in items:
+        #     auth_model.OrderItem.objects.create(
+        #         order=order,
+        #         product=cart_items.product,
+        #         product_name=cart_items.product.name,
+        #         quantity=cart_items.quantity,
+        #         price=cart_items.product.price
+        #     )
+        
         return Response({
             "items": serializer.data,
             "total": total
@@ -290,3 +318,55 @@ def delete_cart_item(request):
     cart_item = auth_model.CartItem.objects.get(id = cart_item_id)
     cart_item.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_user_orders(request):
+    user = request.user
+    order = auth_model.Order.objects.filter(user = user).order_by("-created_at")
+    serializer = auth_serializer.OrderSerializer(order, many = True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def checkout_cart(request):
+    try:
+        cart_code = request.data.get('cart_code')
+        if not cart_code:
+            return Response({"error": "cart_code is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        cart = auth_model.Cart.objects.get(cart_code=cart_code)
+        items = auth_model.CartItem.objects.filter(cart=cart)
+
+        if not items:
+            return Response({"error": "Cart is empty"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        total = sum(item.product.price * item.quantity for item in items)
+
+        order = auth_model.Order.objects.create(
+            user=request.user,
+            total_price=total,
+            created_at=now(),
+            status="PENDING"
+        )
+
+        for item in items:
+            auth_model.OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                product_name=item.product.name,
+                quantity=item.quantity,
+                price=item.product.price
+            )
+
+        # Optionally clear the cart after checkout
+        items.delete()
+
+        return Response({"message": "Order placed successfully", "order_id": order.id}, status=201)
+
+    except auth_model.Cart.DoesNotExist:
+        return Response({"error": "Cart not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

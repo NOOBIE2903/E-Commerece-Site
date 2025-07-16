@@ -90,3 +90,13 @@ class SimpleCartSerializer(serializers.ModelSerializer):
         return CartItemSerializer(items, many=True).data
         
         
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = auth_model.OrderItem
+        fields = ["product_name", "quantity", "price"]
+        
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many = True, read_only = True)
+    class Meta:
+        model = auth_model.Order
+        fields = ["id", "created_at", "total_price", "status", "items"]

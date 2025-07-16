@@ -14,4 +14,6 @@ urlpatterns = [
     path("api/delete_cart_item/", views.delete_cart_item, name="delete_cart_item"),
     path("api/user/<int:user_id>/", views.get_user_detals, name="get_user_detals"),
     path("api/add_user/", views.add_user, name="add_user"),
+    path("api/get_user_orders/", views.get_user_orders, name="get_user_orders"),
+    path("api/checkout_cart/", views.checkout_cart, name="checkout_cart"),
 ]
