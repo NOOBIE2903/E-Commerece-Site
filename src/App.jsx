@@ -14,6 +14,8 @@ import CheckoutItems from "./components/Checkout/CheckoutItems";
 import Register from "./components/Account/Register";
 import Login from "./components/Account/Login";
 import Spinner from "./components/universal-imports/Spinner";
+import UserDetails from "./components/Account/UserDetails";
+import CheckoutDelivery from "./components/Checkout/CheckoutDelivery";
 
 const App = () => {
   const [numCartItems, setNumCartItems] = useState(0);
@@ -157,6 +159,8 @@ const App = () => {
             <Route path="/checkout/" element={<CheckoutItems />} />
             <Route path="/signup/" element={<Register />} />
             <Route path="/login/" element={<Login />} />
+            <Route path="/profile/" element={<UserDetails />} />
+            <Route path="/checkout-confirm/" element={<CheckoutDelivery />} />
           </Routes>
         </main>
 

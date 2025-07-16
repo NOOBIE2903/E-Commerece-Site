@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { FaCcPaypal } from "react-icons/fa6";
 import { SiPhonepe } from "react-icons/si";
 import api from "../../api";
+import { CiDeliveryTruck } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutItems = () => {
+  const navigate = useNavigate()
   const cart_code = localStorage.getItem("cart_code");
 
   const [cartItems, setCartItems] = useState([]);
-  const [cartData, setCartData] = useState([]);
+  const [cartData, setCartData] = useState([]); 
 
   const fetchCart = () => {
     api
@@ -73,13 +76,13 @@ const CheckoutItems = () => {
           Payment Option
         </h1>
         <div className="flex flex-col mt-[20px]">
-          <button className="bg-[#0D6EFD] rounded mt-[10px] mx-[20px] h-[45px] text-[17px] text-white flex items-center justify-center gap-[8px] tracking-tight cursor-pointer hover:bg-[#0d61fd]">
-            <FaCcPaypal className="text-[30px]"/>
-            <h1>Pay With Paypal</h1>
-          </button>
-          <button className="bg-[#5F259F] rounded mt-[10px] mx-[20px] h-[45px] text-[17px] text-white flex items-center justify-center gap-[8px] tracking-tight cursor-pointer hover:bg-[#52259f]">
+          <button onClick={() => navigate("/checkout-confirm/")} className="bg-[#5F259F] rounded mt-[10px] mx-[20px] h-[45px] text-[17px] text-white flex items-center justify-center gap-[8px] tracking-tight cursor-pointer hover:bg-[#52259f]">
             <SiPhonepe className="text-[30px]"/>
             <h1>Pay With PhonPe</h1>
+          </button>
+          <button onClick={() => navigate("/checkout-confirm/")} className="bg-[#c1bfbf] rounded mt-[10px] mx-[20px] h-[45px] text-[17px] text-black flex items-center justify-center gap-[8px] tracking-tight cursor-pointer hover:bg-[#808082]">
+            <CiDeliveryTruck className="text-[30px]"/>
+            <h1>Cash On Delivery</h1>
           </button>
         </div>
       </div>

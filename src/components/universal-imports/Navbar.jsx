@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import axios from "axios"
+import axios from "axios";
 
 const Navbar = ({ numCartItems }) => {
-  console.log(numCartItems);
+  // console.log(numCartItems);
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
 
@@ -15,8 +15,8 @@ const Navbar = ({ numCartItems }) => {
       try {
         const decoded = jwtDecode(accessToken);
         const userId = decoded.user_id;
-        
-        console.log(decoded)
+
+        // console.log(decoded);
 
         axios
           .get(`http://localhost:8000/api/user/${userId}/`, {
@@ -25,9 +25,9 @@ const Navbar = ({ numCartItems }) => {
             },
           })
           .then((res) => {
-            console.log("User API response:", res.data);
+            // console.log("User API response:", res.data);
             setUsername(res.data.username);
-            console.log("Username: ", username)
+            // console.log("Username: ", username);
           })
           .catch((err) => {
             console.log("Fetch user error:", err.response?.data || err.message);
@@ -38,7 +38,7 @@ const Navbar = ({ numCartItems }) => {
     }
   }, []);
 
-  console.log(username)
+  // console.log(username);
 
   const handleLogout = () => {
     localStorage.removeItem("access");
@@ -60,12 +60,15 @@ const Navbar = ({ numCartItems }) => {
       <div className="flex gap-8 items-center relative">
         {username ? (
           <>
-            <span className="text-md font-semibold text-green-700 capitalize">
+            <span
+              onClick={() => navigate("/profile/")}
+              className="text-md font-semibold text-green-700 capitalize cursor-pointer"
+            >
               Hi, {username}
             </span>
             <button
               onClick={handleLogout}
-              className="text-md font-semibold hover:text-red-600 transition duration-300"
+              className="text-md font-semibold hover:text-red-600 transition duration-300 cursor-pointer"
             >
               Logout
             </button>
