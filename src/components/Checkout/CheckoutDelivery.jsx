@@ -59,7 +59,8 @@ const CheckoutDelivery = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-      );
+      ); 
+      console.log("cart_code")
 
       alert("Order placed successfully! Order ID: " + res.data.order_id);
       localStorage.removeItem("cart_code");
