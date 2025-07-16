@@ -55,7 +55,7 @@ const CardContainer = () => {
                   onClick={() => navigate(`/products/${product.slug}`)}
                 >
                   <img
-                    src={`http://localhost:8000${product.image}`}
+                    src={`${BASE_URL}${product.image}`}
                     alt={product.name}
                     className="w-full h-48 object-cover rounded-t-lg"
                   />

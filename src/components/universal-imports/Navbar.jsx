@@ -19,7 +19,7 @@ const Navbar = ({ numCartItems }) => {
         // console.log(decoded);
 
         axios
-          .get(`http://localhost:8000/api/user/${userId}/`, {
+          .get(`${BASE_URL}/api/user/${userId}/`, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },

@@ -43,7 +43,7 @@ const CheckoutItems = () => {
               <div className="flex justify-between items-center">
                 <div className="flex gap-5 items-center">
                   <img
-                    src={`http://localhost:8000${item.product.image}`}
+                    src={`${BASE_URL}${item.product.image}`}
                     alt={item.product.name}
                     className="ml-[13px] mt-[10px] w-[70px] h-[70px] rounded-lg"
                   />

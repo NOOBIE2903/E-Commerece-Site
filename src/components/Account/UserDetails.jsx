@@ -16,7 +16,7 @@ const UserDetails = () => {
         console.log(decoded);
 
         api
-          .get(`http://localhost:8000/api/user/${userId}/`, {
+          .get(`${BASE_URL}/api/user/${userId}/`, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
@@ -39,7 +39,7 @@ const UserDetails = () => {
 
     if (accessToken) {
       api
-        .get("http://localhost:8000/api/get_user_orders/", {
+        .get(`${BASE_URL}/api/get_user_orders/`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

@@ -21,7 +21,7 @@ const CheckoutDelivery = () => {
         const userId = decoded.user_id;
         // Get user details
         const userRes = await axios.get(
-          `http://localhost:8000/api/user/${userId}/`,
+          `${BASE_URL}/api/user/${userId}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ const CheckoutDelivery = () => {
 
         // Get cart state
         const cartRes = await axios.get(
-          `http://localhost:8000/api/get_cart_state?cart_code=${cartCode}`
+          `${BASE_URL}/api/get_cart_state?cart_code=${cartCode}`
         );
         setCartItems(cartRes.data.items);
         setTotal(cartRes.data.sum_total);
@@ -52,7 +52,7 @@ const CheckoutDelivery = () => {
       const token = localStorage.getItem("access");
       const cart_code = localStorage.getItem("cart_code");
       const res = await axios.post(
-        "http://localhost:8000/api/checkout_cart/",
+        `${BASE_URL}/api/checkout_cart/`,
         { cart_code: cartCode },
         {
           headers: {
@@ -63,7 +63,7 @@ const CheckoutDelivery = () => {
       console.log("cart_code")
 
       alert("Order placed successfully! Order ID: " + res.data.order_id);
-      localStorage.removeItem("cart_code");
+      localStorage.removeItem("cart_code"); 
       return true;
     } catch (error) {
       console.error(error);

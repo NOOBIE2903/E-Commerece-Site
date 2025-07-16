@@ -60,7 +60,7 @@ const ProductDetail = ({refreshCartCount}) => {
   //   const token = localStorage.getItem("access")
     
   //   api
-  //     .post("http://127.0.0.1:8000/api/add_item/", newItem, {
+  //     .post("${BASE_URL}/api/add_item/", newItem, {
   //       headers: {
   //         // Authorization: `Bearer ${token}`,
   //         "X-CSRFToken": getCookie("csrftoken"),
@@ -219,7 +219,7 @@ const ProductDetail = ({refreshCartCount}) => {
           {" "}
           {/* CHANGED */}
           <img
-            src={`http://localhost:8000${product.image}`}
+            src={`${BASE_URL}${product.image}`}
             alt={product.name}
             className="w-full h-full object-cover" // Added object-cover
             onError={(e) => {
@@ -264,7 +264,7 @@ const ProductDetail = ({refreshCartCount}) => {
                 onClick={() => navigate(`/products/${similarProd.slug}`)}
               >
                 <img
-                  src={`http://localhost:8000${similarProd.image}`}
+                  src={`${BASE_URL}${similarProd.image}`}
                   alt={similarProd.name}
                   className="w-full h-48 object-cover" // Added fixed height
                 />

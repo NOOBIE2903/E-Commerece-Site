@@ -122,7 +122,7 @@ const Cart = ({ refreshCartCount }) => {
             >
               <div className="flex">
                 <img
-                  src={`http://localhost:8000${item.product.image}`}
+                  src={`${BASE_URL}${item.product.image}`}
                   alt={item.product.name}
                   className="rounded-xl h-[120px] w-[120px] mt-[16px] ml-[16px] object-cover"
                 />
